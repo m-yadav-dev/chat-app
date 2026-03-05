@@ -115,15 +115,15 @@ const updateProfile = async (request, response) => {
 
     let updatedFields = {};
 
-    if (about) updatedFields.about = about;
-    if (phone) updatedFields.phone = phone;
+    if (about !== undefined) updatedFields.about = about;
+    if (phone !== undefined) updatedFields.phone = phone;
 
     if (profilePic) {
       const uploadImage = await cloudinary.uploader.upload(profilePic, {
         folder: "chat-app/profile-pics", // folder name in cloudinary
       });
 
-      updateProfile.profilePic = uploadImage.secure_url;
+      updatedFields.profilePic = uploadImage.secure_url;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, {
