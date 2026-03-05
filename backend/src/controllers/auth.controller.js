@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
 import { generateToken } from "../library/utils.js";
 import { ENV_VARS } from "../library/env.js";
+import cloudinary from "../services/cloudinary.service.js";
 
 const signUp = async (request, response) => {
   try {
@@ -106,6 +107,45 @@ const logout = async (_, response) => {
   }
 };
 
-const updateProfile = async (request, response) => {};
+const updateProfile = async (request, response) => {
+  try {
+    const { profilePic, about, phone } = request.body;
+    const userId = request.user._id;
+    console.log(userId);
 
-export { signUp, login, logout, updateProfile };
+    let updatedFields = {};
+
+    if (about !== undefined) updatedFields.about = about;
+    if (phone !== undefined) updatedFields.phone = phone;
+
+    if (profilePic) {
+      const uploadImage = await cloudinary.uploader.upload(profilePic, {
+        folder: "chat-app/profile-pics", // folder name in cloudinary
+      });
+
+      updatedFields.profilePic = uploadImage.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, {
+      new: true,
+    }).select("-password");
+
+    response.status(200).json({
+      updatedUser,
+    });
+  } catch (error) {
+    console.error(`Error in update profile: ${error.message}`);
+    response.status(500).json({ message: error.message });
+  }
+};
+
+const checkAuth = async (request, response) => {
+  try {
+    response.status(200).json(request.user);
+  } catch (error) {
+    console.log(`Error in checkAuth controller: ${error.message}`);
+    response.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export { signUp, login, logout, updateProfile, checkAuth };

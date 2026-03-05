@@ -16,7 +16,19 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
     },
+    isOnline: {
+      type: Boolean,
+      default: false,
+    },
     profilePic: {
+      type: String,
+      default: "",
+    },
+    about: {
+      type: String,
+      default: "Hey there! I am using NexusChat.",
+    },
+    phone: {
       type: String,
       default: "",
     },
@@ -25,4 +37,3 @@ const userSchema = new mongoose.Schema(
 );
 
 export const User = mongoose.model("User", userSchema);
-
