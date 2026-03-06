@@ -43,37 +43,63 @@ export const getMessages = async (request, response) => {
 export const sendMessage = async (request, response) => {
   try {
     const { id: receiverId } = request.params;
-    const myId = request.user._id;
+    const senderId = request.user._id;
 
     const { text, messageType, media, fileName, duration } = request.body;
-    // const {} = messageType
+    const mediaFile = request.file; // From multer
 
-    if (!text && !media) {
+    // 1. Validation Gateway
+    if (messageType === "text" && !text) {
       return response
         .status(400)
-        .json({ message: "Please provide text and media" });
+        .json({ message: "Cannot send an empty text message" });
+    }
+
+    if (messageType !== "text" && !media && !mediaFile) {
+      return response
+        .status(400)
+        .json({ message: "Media is required for this message type" });
     }
 
     let mediaUrl = "";
     let mediaPublicId = "";
 
-    if (media) {
-      {
-        const uploadResponse = await cloudinary.uploader.upload(media, {
-          folder: "chat-app/messages",
-          resource_type: "auto",
-        });
+    // 2. Media Routing
+    if (mediaFile || media) {
+      const targetFolderConstants = {
+        image: "chat-app/images",
+        audio: "chat-app/audios",
+        video: "chat-app/videos",
+        document: "chat-app/documents",
+      };
 
-        mediaUrl = uploadResponse.secure_url;
-        mediaPublicId = uploadResponse.public_id;
+      const targetFolder =
+        targetFolderConstants[messageType] || "chat-app/others";
+
+      let dataUri;
+      if (mediaFile) {
+        const base64 = mediaFile.buffer.toString("base64");
+        dataUri = `data:${mediaFile.mimetype};base64,${base64}`;
+      } else {
+        dataUri = media;
       }
+
+      // Upload to Cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(dataUri, {
+        folder: targetFolder,
+        resource_type: "auto",
+      });
+
+      mediaUrl = uploadResponse.secure_url;
+      mediaPublicId = uploadResponse.public_id;
     }
 
+    // 3. Database Construction
     const newMessage = new Message({
-      senderId: myId,
+      senderId,
       receiverId,
-      text,
-      messageType,
+      text: text || "",
+      messageType: messageType || "text",
       media: {
         url: mediaUrl,
         public_id: mediaPublicId,
@@ -84,9 +110,22 @@ export const sendMessage = async (request, response) => {
 
     await newMessage.save();
 
-    response.status(200).json(newMessage);
+    // 4. REAL-TIME DELIVERY TRIGGER
+    // -----------------------------------------------------------------
+    // ARCHITECT'S NOTE: We will inject Socket.io here in Phase 3.
+    // -----------------------------------------------------------------
+
+    return response.status(201).json(newMessage);
   } catch (error) {
-    console.error(`Error in sendMessage: ${error.message}`);
-    response.status(500).json({ message: error.message });
+    console.error(`❌ Error in sendMessage API: ${error.message}`);
+
+    if (error.http_code === 400 || error.message.includes("cloudinary")) {
+      // ARCHITECT FIX: Added 'return' to prevent headers already sent crash
+      return response
+        .status(400)
+        .json({ error: "Media upload failed or file type unsupported." });
+    }
+
+    return response.status(500).json({ message: error.message });
   }
 };
