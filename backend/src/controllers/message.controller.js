@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../services/cloudinary.service.js";
+import { getReceiverSocketId, io } from "../library/socket.js";
 
 export const getUsers = async (request, response) => {
   try {
@@ -111,9 +112,13 @@ export const sendMessage = async (request, response) => {
     await newMessage.save();
 
     // 4. REAL-TIME DELIVERY TRIGGER
-    // -----------------------------------------------------------------
-    // ARCHITECT'S NOTE: We will inject Socket.io here in Phase 3.
-    // -----------------------------------------------------------------
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+      console.log(
+        `⚡ Real-time message delivered to Socket: ${receiverSocketId}`,
+      );
+    }
 
     return response.status(201).json(newMessage);
   } catch (error) {
