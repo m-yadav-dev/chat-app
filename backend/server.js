@@ -1,5 +1,6 @@
 
 import {  server } from "./src/library/socket.js";
+import "./src/app.js";
 import connectDb from "./src/library/db.js";
 import dotenv from "dotenv";
 
