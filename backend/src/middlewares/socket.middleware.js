@@ -10,7 +10,7 @@ export const socketAuthMiddleware = (socket, next) => {
 
     const tokenString = cookieHeader
       .split("; ")
-      .find((str) => str.startsWith("jwt_token="));
+      .find((str) => str.startsWith("token="));
     if (!tokenString) {
       return next(new Error("Authentication error: No token found"));
     }

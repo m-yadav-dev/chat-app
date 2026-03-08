@@ -7,7 +7,7 @@ export const authRouteMiddleware = async (request, response, next) => {
     const token = request.cookies.token;
     if (!token) {
       return response.status(401).json({
-        message: "Unauthorized - No token provided",
+        error: "Unauthorized - No token provided",
       });
     }
 
@@ -18,7 +18,7 @@ export const authRouteMiddleware = async (request, response, next) => {
       });
     }
 
-    const user = await User.findById(decoded.userId);
+    const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
       return response.status(401).json({
         message: "Unauthorized - User not found",
@@ -27,8 +27,7 @@ export const authRouteMiddleware = async (request, response, next) => {
     request.user = user;
     next();
   } catch (error) {
-    return response.status(401).json({
-      message: "Unauthorized - Invalid token",
-    });
+    console.log(`Error in authRouteMiddleware: ${error.message}`);
+    response.status(500).json({ error: "Internal server error" });
   }
 };
