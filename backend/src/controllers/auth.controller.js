@@ -42,19 +42,15 @@ const signUp = async (request, response) => {
       generateToken(newUser._id, response);
       await newUser.save();
 
-      response.status(201).json({
+      return response.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,
         email: newUser.email,
         profilePic: newUser.profilePic,
       });
-
-      // send welcome email to user if user sign up successfully
-
-      response.status(201).json({ message: "User created successfully" });
-    } else {
-      response.status(400).json({ message: "Invalid user data" });
     }
+
+    return response.status(400).json({ message: "Invalid user data" });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -95,11 +91,11 @@ const login = async (request, response) => {
 
 const logout = async (_, response) => {
   try {
-    response.cookie("token", "", {
-      expires: new Date(Date.now()),
+    response.clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: ENV_VARS.NODE_ENV !== "development",
+      sameSite: "lax",
+      secure: ENV_VARS.NODE_ENV === "production",
+      path: "/",
     });
     response.status(200).json({ message: "User logged out successfully" });
   } catch (error) {

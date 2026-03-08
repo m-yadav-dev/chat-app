@@ -5,12 +5,17 @@ import { ENV_VARS } from "./env.js";
 import { socketAuthMiddleware } from "../middlewares/socket.middleware.js";
 
 const app = express();
+const socketAllowedOrigins = [
+  ENV_VARS.CLIENT_URL,
+  "http://localhost:5173",
+  "http://localhost:5174",
+].filter(Boolean);
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [ENV_VARS.CLIENT_URL],
+    origin: socketAllowedOrigins,
     methods: ["GET", "POST"],
   },
 });
