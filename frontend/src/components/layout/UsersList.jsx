@@ -7,8 +7,6 @@ const UsersList = ({ user }) => {
 
   const isActive = selectedUser?._id === _id;
 
-  const isProfilePic = !profilePic ? fullName.slice(0, 1) : profilePic;
-
   return (
     <li
       onClick={() => setSelectedUser(user)}
@@ -18,11 +16,16 @@ const UsersList = ({ user }) => {
         <div className="absolute  te left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-emerald-500 rounded-r-full" />
       )}
 
-      <div className="relative flex-shrink-0">
-        <img
-          src={isProfilePic}
-          className="w-12 h-12 rounded-full object-cover border border-slate-700/50 bg-slate-800"
-        />
+      <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold border border-slate-600 overflow-hidden relative">
+        {profilePic ? (
+          <img
+            src={profilePic}
+            className="w-full h-full object-cover"
+            alt={fullName}
+          />
+        ) : (
+          <span>{fullName.charAt(0).toUpperCase()}</span>
+        )}
         {/* {isOnline && (
                       <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-900 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
                     )} */}

@@ -9,7 +9,7 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
-import Skeleton from "./Skeleton";
+import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 import UsersList from "./UsersList";
 
 const Sidebar = () => {
@@ -70,7 +70,8 @@ const Sidebar = () => {
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
         <ul className="p-2 space-y-1 list-unstyled">
           {isUserLoading ? (
-            <Skeleton />
+            <SidebarSkeleton 
+            />
           ) : filterUsers.length === 0 ? (
             <div className="text-center py-10 px-4">
               <div className="w-12 h-12 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -79,9 +80,7 @@ const Sidebar = () => {
               <p className="text-slate-400 text-sm">No users found.</p>
             </div>
           ) : (
-            filterUsers.map((user) => (
-              <UsersList key={user._id} user={user} />
-            ))
+            filterUsers.map((user) => <UsersList key={user._id} user={user} />)
           )}
         </ul>
       </div>
