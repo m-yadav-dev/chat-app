@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { toast } from "sonner";
 import { create } from "zustand";
+// import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -44,6 +45,20 @@ export const useChatStore = create((set, get) => ({
 
   sendMessage: async (userId) => {
     const { selectedUser, messages } = get();
+    // const {authUser} = useAuthStore.getState();
+
+    // const tempId = `temp-${Date.now()}`
+
+    // // const optimisticUpdate = {
+    // //   _id: tempId,
+    // //   sender: authUser._id,
+    // //   receiver: selectedUser._id,
+    // //   message: userId,
+    // //   createdAt: new Date().toISOString(),
+
+    // // }
+
+
     if (!selectedUser) return;
     set({ isSendingMessage: true });
     try {
