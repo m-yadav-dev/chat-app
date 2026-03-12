@@ -7,7 +7,6 @@ import { MessageSquare } from "lucide-react";
 import { useState } from "react";
 
 const HomePage = () => {
-  const isMobileView = typeof window !== "undefined" && window.innerWidth < 768;
   const { isMessageLoading } = useChatStore();
   const [activeChat, setActiveChat] = useState(null);
   return (
@@ -29,7 +28,6 @@ const HomePage = () => {
             <MessageSkeleton />
           ) : (
             <ChatContainer
-              isMobileView={isMobileView}
               activeChat={activeChat}
               setActiveChat={setActiveChat}
             />
