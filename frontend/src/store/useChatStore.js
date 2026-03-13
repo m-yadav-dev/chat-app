@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { toast } from "sonner";
 import { create } from "zustand";
-// import { useAuthStore } from "./useAuthStore";
+import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -43,27 +43,31 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  sendMessage: async (userId) => {
+  sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
-    // const {authUser} = useAuthStore.getState();
-
-    // const tempId = `temp-${Date.now()}`
-
-    // // const optimisticUpdate = {
-    // //   _id: tempId,
-    // //   sender: authUser._id,
-    // //   receiver: selectedUser._id,
-    // //   message: userId,
-    // //   createdAt: new Date().toISOString(),
-
-    // // }
-
-
     if (!selectedUser) return;
-    set({ isSendingMessage: true });
+    const {authUser} = useAuthStore.getState();
+
+    const tempId = `temp-${Date.now()}`
+
+    const optimisticUpdate = {
+      _id: tempId,
+      senderId: authUser._id,
+      receiverId: selectedUser._id,
+      createdAt: new Date().toISOString(),
+      text: messageData.text || "", 
+      media: messageData.media ? {url: messageData.media.url} : null,
+      messageType: messageData.messageType?  "image" :"text" ,
+      status: "sent", 
+    }
+
+
+    set({messages: [...messages, optimisticUpdate], isSendingMessage: true });
+
+
     try {
       const response = await axiosInstance.post(`/messages/send/${userId}`);
-      set({ messages: [...messages, response.data] });
+      set({ messages: get().messages.filter((msg) => msg._id === tempId ? response.data : msg));
     } catch (error) {
       console.error(`Error in sendMessage: ${error}`);
       const errorMessage =
