@@ -31,7 +31,6 @@ export const useChatStore = create((set, get) => ({
     set({ isMessageLoading: true });
     try {
       const response = await axiosInstance.get(`/messages/${userId}`);
-      console.log(response);
       set({ messages: response.data });
     } catch (error) {
       console.error(`Error in getMessages: ${error}`);
@@ -44,39 +43,81 @@ export const useChatStore = create((set, get) => ({
   },
 
   sendMessage: async (messageData) => {
-    const { selectedUser, messages } = get();
-    if (!selectedUser) return;
-    const {authUser} = useAuthStore.getState();
+    const { selectedUser } = get();
+    const { authUser } = useAuthStore.getState();
+    if (!selectedUser || !authUser) return;
 
-    const tempId = `temp-${Date.now()}`
+    const tempId = `temp-${Date.now()}`;
 
-    const optimisticUpdate = {
+    const optimisticMessage = {
       _id: tempId,
       senderId: authUser._id,
       receiverId: selectedUser._id,
       createdAt: new Date().toISOString(),
-      text: messageData.text || "", 
-      media: messageData.media ? {url: messageData.media.url} : null,
-      messageType: messageData.messageType?  "image" :"text" ,
-      status: "sent", 
-    }
+      text: messageData.text || "",
+      media: messageData.media ? { url: messageData.media.url } : null,
+      messageType: messageData.messageType ? "image" : "text",
+      status: "sending",
+    };
 
-
-    set({messages: [...messages, optimisticUpdate], isSendingMessage: true });
-
+    set((state) => ({
+      messages: [...state.messages, optimisticMessage],
+      isSendingMessage: true,
+    }));
 
     try {
-      const response = await axiosInstance.post(`/messages/send/${userId}`);
-      set({ messages: get().messages.filter((msg) => msg._id === tempId ? response.data : msg));
+      const response = await axiosInstance.post(
+        `/messages/send/${selectedUser._id}`,
+        messageData,
+      );
+      set((state) => ({
+        messages: state.messages.map((msg) =>
+          msg._id === tempId ? response.data : msg,
+        ),
+      }));
     } catch (error) {
       console.error(`Error in sendMessage: ${error}`);
       const errorMessage =
         error.response?.data?.messages || "Failed to send message";
       toast.error(errorMessage);
+      set((state) => ({
+        messages: state.messages.map((msg) =>
+          msg._id === tempId ? { ...msg, status: "failed" } : msg,
+        ),
+      }));
     } finally {
       set({ isSendingMessage: false });
     }
   },
 
   setSelectedUser: (user) => set({ selectedUser: user }),
+
+
+
+  subscribeToSocket: () => {
+    const {selectedUser} = get();
+    if (!selectedUser) return;
+
+    const socket = useAuthStore.getState().socket;
+
+    socket.on(`newMessage`, (message) => {
+        const isMessageSentFromSelectedUser = message.senderId === selectedUser._id;
+        if (!isMessageSentFromSelectedUser) {
+            return;
+        }
+        set((state) => ({
+          messages: [...state.messages, message],
+        })
+        )
+    })
+  },
+
+
+  unSubscribeToSocket: () => {
+    const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+    socket.off(`newMessage`);
+  }
+
+
 }));
