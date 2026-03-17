@@ -1,11 +1,9 @@
-import dayjs from "dayjs";
 import { ImageIcon } from "lucide-react";
 import React from "react";
 
 const ChatBubble = (props) => {
   const { isMe, conversationData } = props;
-  const { text, messageType, createdAt } = conversationData;
-  const time = createdAt ? dayjs(createdAt).format("h:mm A") : "";
+  const { text, messageType } = conversationData;
   return (
     <div
       className={`px-4 py-2.5 shadow-sm text-[15px] leading-relaxed ${
@@ -20,11 +18,7 @@ const ChatBubble = (props) => {
           <ImageIcon className="w-6 h-6 text-slate-400" />
         </div>
       )}
-      {time && (
-        <span className="text-[10px] text-slate-500 mt-1.5 px-1 font-medium">
-          {time} {isMe && "• Read"}
-        </span>
-      )}
+     
     </div>
   );
 };

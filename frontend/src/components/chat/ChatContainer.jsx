@@ -7,11 +7,12 @@ import ChatHeader from "./ChatHeader";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import ConversationMessages from "./ConversationMessages";
 import MessageInput from "./MessageInput";
+import { cn } from "@/lib/utils";
 
 const TYPING_IDLE_MS = 1200;
 const TYPING_EMIT_INTERVAL_MS = 1000;
 
-const ChatContainer = ({ activeChat, setActiveChat }) => {
+const ChatContainer = ({ activeChat, setActiveChat, className }) => {
   const { messages, selectedUser, isMessageLoading, sendMessage, typingUsers } =
     useChatStore();
   const { authUser, onlineUsers, socket } = useAuthStore();
@@ -121,7 +122,12 @@ const ChatContainer = ({ activeChat, setActiveChat }) => {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-transparent relative w-full h-full">
+    <div
+      className={cn(
+        "flex-1 flex flex-col bg-transparent relative w-full h-full",
+        className,
+      )}
+    >
       {/* Subtle Background Pattern */}
       <div
         className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
@@ -140,7 +146,14 @@ const ChatContainer = ({ activeChat, setActiveChat }) => {
         setActiveChat={setActiveChat}
       />
       {/* 2. Message History Area */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 relative z-10 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+      <div
+        className={cn(
+          "flex-1 p-4 sm:p-6 space-y-6 relative z-10",
+          isMessageLoading
+            ? "overflow-hidden"
+            : "overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent",
+        )}
+      >
         {isMessageLoading ? (
           <MessageSkeleton />
         ) : (
@@ -167,7 +180,7 @@ const ChatContainer = ({ activeChat, setActiveChat }) => {
           </button>
 
           {/* Input Box */}
-          <div className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/50 transition-all flex items-center min-h-[44px]">
+          <div className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/50 transition-colors flex items-center">
             <MessageInput
               onChangeMessageInput={onChangeMessageInput}
               text={text}

@@ -15,7 +15,7 @@ const ChatHeader = ({ setActiveChat, activeChat, isOnline, isTyping }) => {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setActiveChat(null)}
-          className="mr-2 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+          className="mr-2 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors md:hidden"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
