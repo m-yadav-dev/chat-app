@@ -2,7 +2,7 @@ import { useChatStore } from "@/store/useChatStore";
 import { ArrowLeft, MoreVertical, Phone, Video } from "lucide-react";
 import React from "react";
 
-const ChatHeader = ({ setActiveChat, activeChat, isOnline }) => {
+const ChatHeader = ({ setActiveChat, activeChat, isOnline, isTyping }) => {
   const { users, selectedUser } = useChatStore();
 
   const activeChatId = activeChat ?? selectedUser?._id;
@@ -26,11 +26,15 @@ const ChatHeader = ({ setActiveChat, activeChat, isOnline }) => {
           <h3 className="text-white font-semibold text-sm">
             {activeUser?.fullName}
           </h3>
-          <p
-            className={`text-xs ${isOnline ? "text-emerald-400" : "text-gray-500"}`}
-          >
-            {isOnline ? "Online" : "Offline"}
-          </p>
+          {isTyping ? (
+            <p className="text-xs text-emerald-300 font-medium animate-pulse">Typing...</p>
+          ) : (
+            <p
+              className={`text-xs ${isOnline ? "text-emerald-400" : "text-gray-500"}`}
+            >
+              {isOnline ? "Online" : "Offline"}
+            </p>
+          )}
         </div>
       </div>
       <div className="flex items-center gap-2">

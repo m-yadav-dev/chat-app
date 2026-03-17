@@ -1,13 +1,10 @@
 import ChatContainer from "@/components/chat/ChatContainer";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
-import MessageSkeleton from "@/components/skeletons/MessageSkeleton";
-import { useChatStore } from "@/store/useChatStore";
 import { MessageSquare } from "lucide-react";
 import { useState } from "react";
 
 const HomePage = () => {
-  const { isMessageLoading } = useChatStore();
   const [activeChat, setActiveChat] = useState(null);
   return (
     <>
@@ -23,15 +20,10 @@ const HomePage = () => {
         {/* Main Layout Area */}
         <main className="flex-1 flex overflow-hidden relative">
           <Sidebar />
-
-          {isMessageLoading ? (
-            <MessageSkeleton />
-          ) : (
-            <ChatContainer
-              activeChat={activeChat}
-              setActiveChat={setActiveChat}
-            />
-          )}
+          <ChatContainer
+            activeChat={activeChat}
+            setActiveChat={setActiveChat}
+          />
         </main>
       </div>
     </>
