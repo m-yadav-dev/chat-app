@@ -37,7 +37,7 @@ const messageSchema = new mongoose.Schema(
       default: "sent",
     },
   },
-  { timeseries: true },
+  { timestamps: true },
 );
 
 messageSchema.index({
