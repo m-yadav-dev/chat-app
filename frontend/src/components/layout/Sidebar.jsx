@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 import UsersList from "./UsersList";
+import { cn } from "@/lib/utils";
 
-const Sidebar = () => {
+const Sidebar = ({ className }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { getUsers, users, isUserLoading } = useChatStore();
@@ -27,7 +28,12 @@ const Sidebar = () => {
   );
 
   return (
-    <aside className="h-full w-full md:w-80 lg:w-96 flex flex-col bg-slate-900 border-r border-slate-800 transition-all duration-300">
+    <aside
+      className={cn(
+        "h-full w-full md:w-80 lg:w-96 flex flex-col bg-slate-900 border-r border-slate-800 transition-all duration-300",
+        className,
+      )}
+    >
       {/* 1. SIDEBAR HEADER (Future-Proofed with Action Icons) */}
       <div className="p-4 border-b border-slate-800/50 flex flex-col gap-4">
         <div className="flex items-center justify-between">
@@ -67,7 +73,14 @@ const Sidebar = () => {
       </div>
 
       {/* 3. SCROLLABLE CONTACT LIST */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+      <div
+        className={cn(
+          "flex-1",
+          isUserLoading
+            ? "overflow-hidden"
+            : "overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent",
+        )}
+      >
         <ul className="p-2 space-y-1 list-unstyled">
           {isUserLoading ? (
             <SidebarSkeleton 
