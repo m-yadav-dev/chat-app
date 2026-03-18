@@ -1,10 +1,10 @@
 import { useChatStore } from "@/store/useChatStore";
 import { ArrowLeft, MoreVertical, Phone, Video } from "lucide-react";
 import React from "react";
+import AvatarLogo from "../layout/Avatar";
 
 const ChatHeader = ({ setActiveChat, activeChat, isOnline, isTyping }) => {
   const { users, selectedUser } = useChatStore();
-
   const activeChatId = activeChat ?? selectedUser?._id;
 
   const activeUser =
@@ -20,14 +20,16 @@ const ChatHeader = ({ setActiveChat, activeChat, isOnline, isTyping }) => {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-bold border border-slate-700">
-          {activeUser?.fullName.charAt(0)}
+          <AvatarLogo user={activeUser} />
         </div>
         <div>
           <h3 className="text-white font-semibold text-sm">
             {activeUser?.fullName}
           </h3>
           {isTyping ? (
-            <p className="text-xs text-emerald-300 font-medium animate-pulse">Typing...</p>
+            <p className="text-xs text-emerald-300 font-medium animate-pulse">
+              Typing...
+            </p>
           ) : (
             <p
               className={`text-xs ${isOnline ? "text-emerald-400" : "text-gray-500"}`}

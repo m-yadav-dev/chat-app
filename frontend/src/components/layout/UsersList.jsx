@@ -1,11 +1,12 @@
 import React from "react";
 import { useChatStore } from "@/store/useChatStore";
 import { useAuthStore } from "@/store/useAuthStore";
+import AvatarLogo from "./Avatar";
 
 const UsersList = ({ user }) => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
-  const { _id, fullName, profilePic } = user;
+  const { _id, fullName } = user;
 
   const isActive = selectedUser?._id === _id;
   const isOnline = onlineUsers.includes(_id);
@@ -20,15 +21,7 @@ const UsersList = ({ user }) => {
       )}
 
       <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold border border-slate-600 relative">
-        {profilePic ? (
-          <img
-            src={profilePic}
-            className="w-full h-full object-cover"
-            alt={fullName}
-          />
-        ) : (
-          <span>{fullName.charAt(0).toUpperCase()}</span>
-        )}
+        {<AvatarLogo user={user} />}
         {isOnline && (
           <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-900 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
         )}
@@ -46,7 +39,11 @@ const UsersList = ({ user }) => {
         <div className="flex justify-between items-center gap-2">
           <p
             className={`text-xs truncate ${
-              isOnline ? "text-emerald-400" : isActive ? "text-slate-400" : "text-slate-500"
+              isOnline
+                ? "text-emerald-400"
+                : isActive
+                  ? "text-slate-400"
+                  : "text-slate-500"
             }`}
           >
             {isOnline ? "Online" : "Offline"}

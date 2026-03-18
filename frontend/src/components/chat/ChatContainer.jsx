@@ -138,14 +138,12 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
         }}
       ></div>
 
-      {/* 1. Chat Header */}
       <ChatHeader
         isOnline={isOnline}
         isTyping={isTyping}
         activeChat={activeChat}
         setActiveChat={setActiveChat}
       />
-      {/* 2. Message History Area */}
       <div
         className={cn(
           "flex-1 p-4 sm:p-6 space-y-6 relative z-10",
@@ -171,15 +169,12 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
         <div ref={messagesEndRef}></div>
       </div>
 
-      {/* 3. Message Input Area */}
       <div className="p-4 bg-slate-950 border-t border-slate-800/50 relative z-10">
         <div className="flex items-end gap-2 max-w-4xl mx-auto">
-          {/* Attachment Menu Trigger (Future) */}
           <button className="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors flex-shrink-0">
             <Paperclip className="w-5 h-5" />
           </button>
 
-          {/* Input Box */}
           <div className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/50 transition-colors flex items-center">
             <MessageInput
               onChangeMessageInput={onChangeMessageInput}
@@ -187,7 +182,6 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
             />
           </div>
 
-          {/* Send Button */}
           <button
             onClick={onClickSendMessage}
             className="p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full transition-colors flex-shrink-0 shadow-lg shadow-emerald-500/20"
