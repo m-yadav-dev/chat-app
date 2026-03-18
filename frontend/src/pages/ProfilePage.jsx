@@ -20,10 +20,9 @@ const ProfilePage = () => {
   );
   const [fullName, setFullName] = useState(authUser?.fullName || "");
   const [about, setAbout] = useState(authUser?.about || "");
-
+  const [pendingProfilePic, setPendingProfilePic] = useState(null);
 
   const navigate = useNavigate();
-
 
   const fileInputRef = useRef(null);
 
@@ -50,7 +49,8 @@ const ProfilePage = () => {
     reader.onloadend = () => {
       const base64Image = reader.result;
       setSelectedImage(base64Image);
-      updateProfile({ profilePic: base64Image });
+      // updateProfile({ profilePic: base64Image });
+      setPendingProfilePic(base64Image);
     };
   };
 
@@ -58,17 +58,16 @@ const ProfilePage = () => {
     setSelectedImage(authUser?.profilePic || "");
     setFullName(authUser?.fullName || "");
     setAbout(authUser?.about || "");
+    setPendingProfilePic(null);
   }, [authUser?.profilePic, authUser?.fullName, authUser?.about]);
 
   const user = authUser;
-  const hasChanges =
-    fullName !== (authUser?.fullName || "") ||
-    about !== (authUser?.about || "");
-  const canSave = hasChanges && !isUpdatingProfile;
 
   const onResetChanges = () => {
     setFullName(authUser?.fullName || "");
     setAbout(authUser?.about || "");
+    setSelectedImage(authUser?.profilePic || "");
+    setPendingProfilePic(null);
   };
 
   const onSaveProfile = async () => {
@@ -86,9 +85,22 @@ const ProfilePage = () => {
       payload.about = about;
     }
 
+    if (pendingProfilePic && pendingProfilePic !== authUser?.profilePic) {
+      payload.profilePic = pendingProfilePic;
+    }
+
     if (Object.keys(payload).length === 0) return;
     await updateProfile(payload);
+    setPendingProfilePic(null);
   };
+
+  const hasChanges =
+    fullName !== (authUser?.fullName || "") ||
+    about !== (authUser?.about || "") ||
+    pendingProfilePic !== null;
+
+  const canSave = hasChanges && !isUpdatingProfile;
+
   return (
     <>
       <Navbar />
@@ -97,7 +109,10 @@ const ProfilePage = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none"></div>
 
           <div className="px-6 py-5 border-b border-slate-800/50 flex items-center gap-4 relative z-10">
-            <button onClick={() => navigate('/')} className="p-2 -ml-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors" > 
+            <button
+              onClick={() => navigate("/")}
+              className="p-2 -ml-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+            >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1 className="text-xl font-bold tracking-tight text-white">
