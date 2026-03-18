@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
 import { generateToken } from "../library/utils.js";
 import { ENV_VARS } from "../library/env.js";
-import cloudinary from "../services/cloudinary.service.js";
+import uploadService from "../services/upload.service.js";
 
 const signUp = async (request, response) => {
   try {
@@ -105,7 +105,7 @@ const logout = async (_, response) => {
 
 const updateProfile = async (request, response) => {
   try {
-    const { profilePic, about, phone } = request.body;
+    const { profilePic, about, phone, fullName } = request.body;
     const userId = request.user._id;
     console.log(userId);
 
@@ -113,13 +113,17 @@ const updateProfile = async (request, response) => {
 
     if (about !== undefined) updatedFields.about = about;
     if (phone !== undefined) updatedFields.phone = phone;
+    if (fullName !== undefined) updatedFields.fullName = fullName;
 
     if (profilePic) {
-      const uploadImage = await cloudinary.uploader.upload(profilePic, {
-        folder: "chat-app/profile-pics", // folder name in cloudinary
-      });
-
-      updatedFields.profilePic = uploadImage.secure_url;
+      const isBase64Image =
+        typeof profilePic === "string" && profilePic.startsWith("data:");
+      if (isBase64Image) {
+        const uploadImage = await uploadService(profilePic);
+        updatedFields.profilePic = uploadImage.secure_url;
+      } else {
+        updatedFields.profilePic = profilePic;
+      }
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, {

@@ -12,14 +12,12 @@ const HomePage = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-slate-950 text-slate-50 font-sans flex flex-col h-screen overflow-hidden">
-        {/* Fake Navbar for context (From Phase 1) */}
         <header className="h-16 flex-shrink-0 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 flex items-center px-6 z-20">
           <div className="flex items-center gap-2 text-emerald-500 font-bold">
             <MessageSquare className="w-5 h-5" /> <h3 className="text-[1rem] sm:text-[0.8rem]">CHATT-APP</h3>
           </div>
         </header>
 
-        {/* Main Layout Area */}
         <main className="flex-1 flex overflow-hidden relative">
           <Sidebar
             className={cn(
