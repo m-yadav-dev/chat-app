@@ -37,7 +37,7 @@ const DropDownMenu = () => {
       >
         <DropdownMenuItem
           asChild
-          className="cursor-pointer gap-2 rounded-lg px-3 py-2 text-sm transition-colors focus:bg-slate-800/80 focus:text-white data-[variant=destructive]:text-rose-400"
+          className="cursor-pointer gap-2 rounded-lg px-3 py-2 text-sm transition-colors focus:bg-slate-800/10 focus:text-white data-[variant=destructive]:text-rose-400"
         >
           <NavLink to="/profile">
             <UserIcon className="h-4 w-4 text-slate-400" />
