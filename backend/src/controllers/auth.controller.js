@@ -120,9 +120,16 @@ const updateProfile = async (request, response) => {
         typeof profilePic === "string" && profilePic.startsWith("data:");
       if (isBase64Image) {
         const uploadImage = await uploadService(profilePic);
-        updatedFields.profilePic = uploadImage.secure_url;
-      } else {
+        updatedFields.profilePic = uploadImage?.secure_url || uploadImage?.url || uploadImage;
+      } else if (
+        typeof profilePic === "string" &&
+        profilePic.startsWith("http")
+      ) {
         updatedFields.profilePic = profilePic;
+      } else {
+        return response
+          .status(400)
+          .json({ success: false, message: "Invalid profile picture format" });
       }
     }
 

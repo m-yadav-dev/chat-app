@@ -11,7 +11,8 @@ import {
 import Navbar from "@/components/layout/Navbar";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import LoggedInUserAvatar from "./LoggedInUserAvatar";
 
 const ProfilePage = () => {
   const { authUser, updateProfile, isUpdatingProfile } = useAuthStore();
@@ -130,15 +131,18 @@ const ProfilePage = () => {
                   disabled={isUpdatingProfile}
                 >
                   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-800 bg-slate-800 flex items-center justify-center text-4xl font-bold text-slate-300 shadow-xl transition-transform duration-300 group-hover:scale-[1.02]">
-                    {selectedImage ? (
+                    {/* {selectedImage ? (
                       <img
                         src={selectedImage}
                         alt="Profile"
-                        className="w-full h-full object-cover"
                       />
                     ) : (
                       user?.fullName?.charAt(0)?.toUpperCase() || "?"
-                    )}
+                    )} */}
+                    <LoggedInUserAvatar
+                      selectedImage={selectedImage}
+                      user={user}
+                    />
                   </div>
 
                   <div className="absolute inset-0 bg-slate-950/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-1">
