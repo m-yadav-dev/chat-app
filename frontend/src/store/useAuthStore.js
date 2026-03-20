@@ -1,13 +1,16 @@
 import { axiosInstance } from "../lib/axios.js";
 import { toast } from "sonner";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { io } from "socket.io-client";
 
 const BASE_URL =
   import.meta.env.VITE_API_URL ||
   (import.meta.env.MODE === "development" ? "http://localhost:3000" : "/api");
 
-export const useAuthStore = create((set, get) => ({
+export const useAuthStore = create(
+  persist(
+    (set, get) => ({
   authUser: null,
   isCheckingAuth: true,
   isSigningUp: false,
@@ -33,7 +36,10 @@ export const useAuthStore = create((set, get) => ({
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       console.log(`Error in checkAuth: ${errorMessage}`);
-      set({ authUser: null });
+
+      if (error.response?.status === 401) {
+        set({ authUser: null });
+      }
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -129,5 +135,11 @@ export const useAuthStore = create((set, get) => ({
       get().socket.disconnect();
     }
   },
-}));
+    }),
+    {
+      name: "auth-store",
+      partialize: (state) => ({ authUser: state.authUser }),
+    },
+  ),
+);
 
