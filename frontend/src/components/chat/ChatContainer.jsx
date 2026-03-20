@@ -8,6 +8,7 @@ import MessageSkeleton from "../skeletons/MessageSkeleton";
 import ConversationMessages from "./ConversationMessages";
 import MessageInput from "./MessageInput";
 import { cn } from "@/lib/utils";
+import AddAttachment from "./AttachmentMenu";
 
 const TYPING_IDLE_MS = 1200;
 const TYPING_EMIT_INTERVAL_MS = 1000;
@@ -15,6 +16,7 @@ const TYPING_EMIT_INTERVAL_MS = 1000;
 const ChatContainer = ({ activeChat, setActiveChat, className }) => {
   const { messages, selectedUser, isMessageLoading, sendMessage, typingUsers } =
     useChatStore();
+
   const { authUser, onlineUsers, socket } = useAuthStore();
 
   const resolvedActiveChatId =
@@ -23,6 +25,9 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
   const [text, setText] = useState("");
   const lastFetchedChatIdRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const messageInputRef = useRef(null);
+  const [selectedFile, selectedAttachmentType] = useState(null);
+  const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
   const typingStopTimeoutRef = useRef(null);
   const lastTypingEmitAtRef = useRef(0);
   const isOnline = activeChatId ? onlineUsers.includes(activeChatId) : false;
@@ -93,6 +98,14 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
       (msg.senderId === authUser?._id && msg.receiverId === activeChatId),
   );
 
+  const handleAttachmentSelect = (file) => {
+    console.log(file);
+
+    selectedAttachmentType(file);
+
+    setShowAttachmentMenu(false);
+  };
+
   const onClickSendMessage = (event) => {
     event.preventDefault();
 
@@ -105,6 +118,13 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
     lastTypingEmitAtRef.current = 0;
     clearTypingTimeout();
   };
+
+  const onClickAttachmentMenu = () => {
+    setShowAttachmentMenu(!showAttachmentMenu);
+    messageInputRef.current?.click();
+  };
+
+  const onChangeFileHandling = (event) => {};
 
   const onChangeMessageInput = (event) => {
     const nextValue = event.target.value;
@@ -170,10 +190,26 @@ const ChatContainer = ({ activeChat, setActiveChat, className }) => {
       </div>
 
       <div className="p-4 bg-slate-950 border-t border-slate-800/50 relative z-10">
-        <div className="flex items-end gap-2 max-w-4xl mx-auto">
-          <button className="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors flex-shrink-0">
+        <div className="flex items-end gap-2 max-w-4xl mx-auto relative">
+          {showAttachmentMenu && (
+            <AddAttachment onSelect={handleAttachmentSelect} />
+          )}
+
+          <button
+            type="button"
+            onClick={onClickAttachmentMenu}
+            className="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors flex-shrink-0"
+          >
             <Paperclip className="w-5 h-5" />
           </button>
+
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={messageInputRef}
+            onChange={onChangeFileHandling}
+          />
 
           <div className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden focus-within:border-emerald-500/50 focus-within:ring-1 focus-within:ring-emerald-500/50 transition-colors flex items-center">
             <MessageInput

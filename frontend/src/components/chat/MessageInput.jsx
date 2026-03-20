@@ -5,12 +5,13 @@ const MessageInput = (props) => {
   const { onChangeMessageInput, text } = props;
   return (
     <>
-    <Input onChange={onChangeMessageInput}
+      <Input
+        onChange={onChangeMessageInput}
         value={text}
         type="text"
         name="message"
         placeholder="Type a message..."
-    />
+      />
     </>
   );
 };
