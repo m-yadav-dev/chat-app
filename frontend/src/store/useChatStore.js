@@ -23,6 +23,7 @@ export const useChatStore = create((set, get) => ({
       const response = await axiosInstance.get("/messages/users");
       const users = response.data;
       set({ users });
+      // set({ users });
       get().restoreSelectedUser(users);
     } catch (error) {
       console.error(`Error in getUsers: ${error}`);
