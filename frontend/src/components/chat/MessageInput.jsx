@@ -1,18 +1,9 @@
-import React from "react";
-import { Input } from "../ui/input";
+import React from 'react'
 
-const MessageInput = (props) => {
-  const { onChangeMessageInput, text } = props;
+const MessageInput = () => {
   return (
-    <>
-    <Input onChange={onChangeMessageInput}
-        value={text}
-        type="text"
-        name="message"
-        placeholder="Type a message..."
-    />
-    </>
-  );
-};
+    <div>MessageInput</div>
+  )
+}
 
-export default MessageInput;
+export default MessageInput
