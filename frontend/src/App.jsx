@@ -6,7 +6,7 @@ import ProfilePage from "./pages/ProfilePage";
 import "./App.css";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-import { Loader, Loader2 } from "lucide-react";
+import Loader from "./components/loader/Loader";
 
 function App() {
   const { authUser, isCheckingAuth, checkAuth } = useAuthStore();
@@ -16,12 +16,7 @@ function App() {
   }, [checkAuth]);
 
   if (isCheckingAuth) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="animate-spin" size={48} />
-        <span className="ml-4 text-lg">Checking authentication...</span>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -30,13 +25,11 @@ function App() {
         <Route path="/" element={authUser ? <HomePage /> : <LogInPage />} />
         <Route
           path="/signup"
-          element={
-            !authUser && !isCheckingAuth ? <SignUpPage /> : <LogInPage />
-          }
+          element={authUser ? <HomePage /> : <SignUpPage />}
         />
         <Route
           path="/login"
-          element={!authUser && !isCheckingAuth ? <LogInPage /> : <HomePage />}
+          element={authUser ? <HomePage /> : <LogInPage />}
         />
         <Route
           path="/profile"
