@@ -4,43 +4,48 @@ import { Label } from "../ui/label";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const { signUp } = useAuthStore();
 
   const onSubmitFormData = async (event) => {
     event.preventDefault();
 
-    const isValid = formData.fullname && formData.email && formData.password;
+    const isValid = formData.fullName && formData.email && formData.password;
 
     if (!isValid) {
       toast.error("Please fill in all fields.");
       return;
     }
-    await signUp(formData);
+    const isSignUpSuccessful = await signUp(formData);
 
-   
+    if (isSignUpSuccessful) {
+      navigate("/");
+    }
   };
   return (
     <form action="" onSubmit={onSubmitFormData}>
       <div>
-        <Label htmlFor="fullname">Full Name</Label>
+        <Label htmlFor="fullName">Full Name</Label>
         <Input
           placeholder="Enter your full name..."
           className="my-4"
           type="text"
-          name="fullname"
-          value={formData.fullname}
+          name="fullName"
+          value={formData.fullName}
           onChange={(event) =>
-            setFormData((prev) => ({ ...prev, fullname: event.target.value }))
+            setFormData((prev) => ({ ...prev, fullName: event.target.value }))
           }
-          id="fullname"
+          id="fullName"
         />
       </div>
       <div>
