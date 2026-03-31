@@ -1,12 +1,14 @@
 import React from "react";
 import { SearchIcon } from "lucide-react";
 import SidebarHeader from "./SidebarHeader";
-import { Input } from "../ui/input";
 import UsersList from "./UsersList";
 
 const Sidebar = () => {
   return (
-    <aside className="flex h-full flex-col overflow-hidden rounded-none border-r border-zinc-200/70 bg-linear-to-b from-zinc-50 via-zinc-50 to-zinc-100/60 md:rounded-r-3xl md:shadow-[0_12px_38px_-22px_rgba(15,23,42,0.45)]">
+    <aside
+      className="flex h-full flex-col overflow-hidden rounded-none border-r border-zinc-200/70 bg-linear-to-b from-zinc-50 via-zinc-50
+     to-zinc-100/60 md:shadow-[0_12px_38px_-22px_rgba(15,23,42,0.45)] w-full"
+    >
       {/* Sidebar Header*/}
       <SidebarHeader />
 
@@ -14,9 +16,15 @@ const Sidebar = () => {
         {/* Search Bar */}
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
-          <Input
+          <input
+            whileFocus={{
+              scale: 1.01,
+            }}
+            transition={{
+              duration: 0.2,
+            }}
             placeholder="Search or start a new chat"
-            className="h-11 rounded-2xl border-zinc-200 bg-white pl-10 shadow-none placeholder:text-zinc-400 focus-visible:ring-zinc-300"
+            className="h-11 border-2 border-gray-300 w-full rounded-2xl border-zinc-200 bg-white pl-10 shadow-none placeholder:text-zinc-400 focus-visible:ring-zinc-300"
           />
         </div>
 

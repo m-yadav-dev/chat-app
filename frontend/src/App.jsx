@@ -29,7 +29,7 @@ function App() {
         />
         <Route
           path="/login"
-          element={authUser ? <HomePage /> : <LogInPage />}
+          element={!authUser ? <LogInPage /> : <HomePage />}
         />
         <Route
           path="/profile"

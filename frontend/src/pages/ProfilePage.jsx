@@ -1,9 +1,13 @@
-import React from 'react'
+import Header from "@/components/layout/Header";
+import React from "react";
 
 const ProfilePage = () => {
   return (
-    <div>ProfilePage</div>
-  )
-}
+    <>
+      <Header />
+      <div>ProfilePage</div>
+    </>
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

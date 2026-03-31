@@ -29,23 +29,7 @@ const SidebarHeader = () => {
             type="button"
             variant="ghost"
             size="icon-sm"
-            className="rounded-full text-zinc-600 hover:bg-zinc-200/70"
-          >
-            <MessageCircleMoreIcon className="size-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full text-zinc-600 hover:bg-zinc-200/70"
-          >
-            <BellIcon className="size-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full text-zinc-600 hover:bg-zinc-200/70"
+            className="rounded-full text-zinc-600 hover:bg-zinc-200/70 cursor-pointer"
           >
             <EllipsisVerticalIcon className="size-4" />
           </Button>
