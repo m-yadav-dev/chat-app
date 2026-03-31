@@ -1,13 +1,42 @@
 import React from "react";
 import { PinIcon } from "lucide-react";
 import UsersAvatar from "./Avatar";
+import { motion } from "motion/react";
+import { useChatStore } from "@/store/useChatStore";
+
+const MotionListItem = motion.li;
+
+const itemMotion = {
+  rest: {
+    scale: 1,
+    backgroundColor: "rgba(255,255,255,0)",
+  },
+  hover: {
+    scale: 1.05,
+    backgroundColor: "#ececec",
+  },
+};
 
 const UserListItem = ({ chat }) => {
   const { name, message, time, unread, online, image, pinned } = chat;
+  const { setSelectedUser } = useChatStore();
+
   return (
-    <li
-      className="group rounded-2xl border border-transparent 
-    px-2.5 py-2.5 transition-colors hover:border-zinc-200 hover:bg-white "
+    <MotionListItem
+      initial="rest"
+      animate="rest"
+      whileHover="hover"
+      variants={itemMotion}
+      transition={{
+        type: "spring",
+        stiffness: 360,
+        damping: 28,
+        mass: 0.65,
+        backgroundColor: { duration: 0.18, ease: "easeOut" },
+      }}
+      className="group cursor-pointer rounded-2xl border border-transparent transform-gpu
+      px-2.5 py-2.5"
+      onClick={() => setSelectedUser(chat)}
     >
       <div className="flex items-start gap-3">
         <UsersAvatar image={image} name={name} online={online} />
@@ -31,7 +60,7 @@ const UserListItem = ({ chat }) => {
           </span>
         )}
       </div>
-    </li>
+    </MotionListItem>
   );
 };
 

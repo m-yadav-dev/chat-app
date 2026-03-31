@@ -2,9 +2,9 @@ import React from 'react'
 
 const ChatHeader = () => {
   return (
-    <div>
-      
-    </div>
+    <header className="border-b border-zinc-200/70 px-4 py-3.5">
+        
+    </header>
   )
 }
 

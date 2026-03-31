@@ -81,6 +81,10 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --app-scrollbar-track: #e5e7eb;
+    --app-scrollbar-track-soft: #f3f4f6;
+    --app-scrollbar-thumb: #9ca3af;
+    --app-scrollbar-thumb-strong: #6b7280;
 }
 
 .dark {
@@ -115,6 +119,10 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    --app-scrollbar-track: #27272a;
+    --app-scrollbar-track-soft: #18181b;
+    --app-scrollbar-thumb: #71717a;
+    --app-scrollbar-thumb-strong: #a1a1aa;
 }
 
 @layer base {
@@ -123,8 +131,65 @@
     }
   body {
     @apply bg-background text-foreground;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     }
   html {
     @apply font-mono;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
     }
+}
+
+/* Global app scrollbar for page-level scroll (html/body) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--app-scrollbar-track-soft) 0%, var(--app-scrollbar-track) 100%);
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  border: 2px solid var(--app-scrollbar-track);
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--app-scrollbar-thumb) 0%, var(--app-scrollbar-thumb-strong) 100%);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--app-scrollbar-thumb-strong) 0%, var(--app-scrollbar-thumb) 100%);
+}
+
+/* Sidebar chat list scrollbar styling */
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
+}
+
+.chat-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--app-scrollbar-track-soft) 0%, var(--app-scrollbar-track) 100%);
+  margin-block: 4px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  border: 2px solid var(--app-scrollbar-track);
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--app-scrollbar-thumb) 0%, var(--app-scrollbar-thumb-strong) 100%);
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--app-scrollbar-thumb-strong) 0%, var(--app-scrollbar-thumb) 100%);
 }

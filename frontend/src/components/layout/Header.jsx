@@ -2,6 +2,11 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { LogOutIcon } from "lucide-react";
 import React from "react";
 import Loader from "../loader/Loader";
+import { useLocation } from "react-router-dom";
+import HeaderDropdown from "./HeaderDropdown";
+import { motion } from "motion/react"
+
+
 
 const Header = () => {
   const { logout, isUserLoggedOut } = useAuthStore();
@@ -9,6 +14,11 @@ const Header = () => {
   const handleLogout = () => {
     logout();
   };
+
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
+  const isProfilePage = location.pathname === "/profile";
 
   {
     isUserLoggedOut && <Loader />;
@@ -20,13 +30,22 @@ const Header = () => {
         <div>
           <h3 className="font-[650] text-[1.4rem] text-gray-800">Chat App</h3>
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center cursor-pointer font-[650] hover:scale-110 duration-110 transition-all gap-2 p-[10px] bg-gray-800 text-white rounded-[8px]"
-        >
-          <LogOutIcon />
-          Logout
-        </button>
+        {isHomePage && <HeaderDropdown />}
+        {isProfilePage && (
+          <motion.button
+            whileHover={{
+              scale: 1.05
+            }}
+            whileTap={{
+              scale: 0.95
+            }}
+            onClick={handleLogout}
+            className="flex items-center cursor-pointer font-[650] gap-2 p-[10px] bg-gray-800 text-white rounded-[8px]"
+          >
+            <LogOutIcon />
+            Logout
+          </motion.button>
+        )}
       </div>
     </header>
   );
