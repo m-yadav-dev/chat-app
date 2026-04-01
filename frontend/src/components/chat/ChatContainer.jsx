@@ -1,12 +1,15 @@
-import React from 'react'
-import ChatHeader from './ChatHeader'
+import React from "react";
+import ChatHeader from "./ChatHeader";
+import ConversationMessages from "./ConversationMessages";
+
 
 const ChatContainer = () => {
   return (
-    <div>
+    <section className="relative flex h-full w-full flex-col overflow-hidden border-l border-zinc-200/70 bg-[linear-gradient(180deg,#fafafa_0%,#f5f5f5_100%)]">
       <ChatHeader />
-    </div>
-  )
-}
+      <ConversationMessages />
+    </section>
+  );
+};
 
-export default ChatContainer
+export default ChatContainer;

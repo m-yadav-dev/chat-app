@@ -1,10 +1,11 @@
 import React from "react";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "../ui/avatar";
-const UsersAvatar = ({ image, name, online }) => {
+const UsersAvatar = ({ image, name, online, size = "lg", className = "" }) => {
   const fallbackText = name ? name.slice(0, 2).toUpperCase() : "NA";
+
   return (
     <>
-      <Avatar size="lg" className="mt-0.5">
+      <Avatar size={size} className={`${className}`}>
         <AvatarImage src={image} alt={name} />
         <AvatarFallback>{fallbackText}</AvatarFallback>
         {online && <AvatarBadge className="bg-emerald-500 ring-zinc-100" />}

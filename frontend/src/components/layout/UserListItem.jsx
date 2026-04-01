@@ -1,6 +1,6 @@
 import React from "react";
 import { PinIcon } from "lucide-react";
-import UsersAvatar from "./Avatar";
+import UsersAvatar from "../common/userAvatar";
 import { motion } from "motion/react";
 import { useChatStore } from "@/store/useChatStore";
 
@@ -39,7 +39,9 @@ const UserListItem = ({ chat }) => {
       onClick={() => setSelectedUser(chat)}
     >
       <div className="flex items-start gap-3">
-        <UsersAvatar image={image} name={name} online={online} />
+        <UsersAvatar 
+        image={image} name={name} 
+        online={online} size="lg"  />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <p className="truncate text-sm font-semibold text-zinc-900">
