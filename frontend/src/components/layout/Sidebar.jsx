@@ -17,12 +17,6 @@ const Sidebar = () => {
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
           <input
-            whileFocus={{
-              scale: 1.01,
-            }}
-            transition={{
-              duration: 0.2,
-            }}
             placeholder="Search or start a new chat"
             className="h-11 border-2 border-gray-300 w-full rounded-2xl border-zinc-200 bg-white pl-10 shadow-none placeholder:text-zinc-400 focus-visible:ring-zinc-300"
           />

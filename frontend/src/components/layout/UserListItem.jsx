@@ -18,7 +18,7 @@ const itemMotion = {
 };
 
 const UserListItem = ({ chat }) => {
-  const { name, message, time, unread, online, image, pinned } = chat;
+  const { fullName, isOnline, profilePic } = chat;
   const { setSelectedUser } = useChatStore();
 
   return (
@@ -40,28 +40,28 @@ const UserListItem = ({ chat }) => {
     >
       <div className="flex items-start gap-3">
         <UsersAvatar 
-        image={image} name={name} 
-        online={online} size="lg"  />
+        image={profilePic} name={fullName} 
+        online={isOnline} size="lg"  />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <p className="truncate text-sm font-semibold text-zinc-900">
-              {name}
+              {fullName}
             </p>
-            <span className="shrink-0 text-[11px] text-zinc-400">{time}</span>
+            {/* <span className="shrink-0 text-[11px] text-zinc-400">{time}</span> */}
           </div>
 
-          <div className="mt-0.5 flex items-center gap-1.5">
-            {pinned && <PinIcon className="size-3 text-zinc-400" />}
-            <p className="truncate text-xs text-zinc-500">{message}</p>
-          </div>
+          {/* <div className="mt-0.5 flex items-center gap-1.5">
+            {/* {pinned && <PinIcon className="size-3 text-zinc-400" />} */}
+            {/* <p className="truncate text-xs text-zinc-500">{message}</p> */}
+          </div> 
         </div>
 
-        {unread > 0 && (
+        {/* {unread > 0 && (
           <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1 text-[11px] font-semibold text-zinc-100">
             {unread}
           </span>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
     </MotionListItem>
   );
 };
