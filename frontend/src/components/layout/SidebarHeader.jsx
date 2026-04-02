@@ -2,18 +2,19 @@ import { EllipsisVerticalIcon } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import UsersAvatar from "../common/userAvatar";
-// import { useChatStore } from "@/store/useChatStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const SidebarHeader = () => {
-  // const {fullName, } = useChatStore();
+  const { authUser } = useAuthStore();
+  const { fullName, profilePic } = authUser || {};
   return (
     <header className="border-b border-zinc-200/70 px-4 py-3.5">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          <UsersAvatar />
+          <UsersAvatar image={profilePic} fullName={fullName} />
           <div className="min-w-0">
             <h2 className="truncate text-sm font-semibold text-zinc-900">
-              Ravi Maheshwari
+              {fullName}
             </h2>
             <p className="truncate text-xs text-zinc-500">Online</p>
           </div>

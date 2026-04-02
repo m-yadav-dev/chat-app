@@ -4,6 +4,7 @@ import UsersAvatar from "../common/userAvatar";
 import ImageMediaType from "./MessageTypes/ImageMediaType";
 import DocumentMediaType from "./MessageTypes/DocumentMediaType";
 import AudioMediaType from "./MessageTypes/AudioMediaType";
+
 const ChatBubble = ({ isOwnMessage, message }) => {
   const { senderName, senderImage, messageType, text, fileUrl, createdAt } =
     message;
