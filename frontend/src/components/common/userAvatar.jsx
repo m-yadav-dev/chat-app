@@ -8,7 +8,9 @@ const UsersAvatar = ({ image, online, size = "lg", className = "", fullName }) =
       <Avatar size={size} className={`${className}`}>
         <AvatarImage src={image} alt={fullName} />
         <AvatarFallback>{fallbackText}</AvatarFallback>
-        {online && <AvatarBadge className="bg-emerald-500 ring-zinc-100" />}
+        {online && (
+          <AvatarBadge className="bg-emerald-500 ring-white dark:ring-zinc-900" />
+        )}
       </Avatar>
     </>
   );

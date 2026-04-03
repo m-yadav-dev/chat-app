@@ -3,6 +3,7 @@ import { PinIcon } from "lucide-react";
 import UsersAvatar from "../common/userAvatar";
 import { motion } from "motion/react";
 import { useChatStore } from "@/store/useChatStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const MotionListItem = motion.li;
 
@@ -18,8 +19,10 @@ const itemMotion = {
 };
 
 const UserListItem = ({ chat }) => {
-  const { fullName, isOnline, profilePic } = chat;
+  const { fullName,  profilePic } = chat;
   const { setSelectedUser } = useChatStore();
+  const {onlineUsers} = useAuthStore();
+  const isUserOnline = onlineUsers.includes(chat._id);
 
   return (
     <MotionListItem
@@ -41,7 +44,7 @@ const UserListItem = ({ chat }) => {
       <div className="flex items-start gap-3">
         <UsersAvatar 
         image={profilePic} name={fullName} 
-        online={isOnline} size="lg"  />
+        online={isUserOnline} size="lg"  />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <p className="truncate text-sm font-semibold text-zinc-900">

@@ -2,9 +2,15 @@ import React from "react";
 import UsersAvatar from "../common/userAvatar";
 import { useChatStore } from "@/store/useChatStore";
 import { EllipsisVerticalIcon, Phone, Search } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 const ChatHeader = () => {
   const { selectedUser } = useChatStore();
-  const { fullName, profilePic, isOnline } = selectedUser || {};
+  const { fullName, profilePic } = selectedUser || {};
+
+  const { onlineUsers } = useAuthStore();
+const isUserOnline = onlineUsers.includes(selectedUser?._id);
+
+
   return (
     <header
       className="sticky top-0 z-10 flex items-center gap-3 
@@ -14,11 +20,11 @@ const ChatHeader = () => {
       <div className="flex items-center gap-2">
         <UsersAvatar 
         size="sm" fullName={fullName} 
-        image={profilePic} online={isOnline} className="mt-0.5" />
+        image={profilePic} online={isUserOnline} className="mt-0.5" />
         <div>
           <h2 className="text-[16px] font-[500] text-zinc-900">{fullName}</h2>
-          <p className={`text-xs ${isOnline ? "text-emerald-500" : "text-zinc-500"}`}>
-            {isOnline ? "Online" : "Offline"}
+          <p className={`text-xs ${isUserOnline ? "text-emerald-500" : "text-zinc-500"}`}>
+            {isUserOnline ? "Online" : "Offline"}
           </p>
         </div>
       </div>
