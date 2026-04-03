@@ -1,8 +1,16 @@
 import { axiosInstance } from "@/lib/axios";
+import { io } from "socket.io-client";
 import { toast } from "sonner";
 import { create } from "zustand";
 
-export const useAuthStore = create((set) => ({
+const BASE_URL =
+  import.meta.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
+
+const socket = io(BASE_URL);
+console.log("Current Base URL:", BASE_URL);
+console.log("Connected Socket:", socket);
+
+export const useAuthStore = create((set, get) => ({
   authUser: null,
   isUserLoggedIn: false,
   isUserSignUp: false,
@@ -10,6 +18,8 @@ export const useAuthStore = create((set) => ({
   isUpdatingProfile: false,
   isUserLoggedOut: false,
 
+  socket: null,
+  onlineUsers: [],
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
@@ -24,6 +34,7 @@ export const useAuthStore = create((set) => ({
       }
 
       set({ authUser: response.data });
+      get().connectSocket();
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
@@ -39,7 +50,9 @@ export const useAuthStore = create((set) => ({
     set({ isUserSignUp: true });
     try {
       await axiosInstance.post("auth/sign-up", userData);
+      
       toast.success("Account created successfully!");
+      get().connectSocket();
       return true;
     } catch (error) {
       const errorMessage =
@@ -58,6 +71,7 @@ export const useAuthStore = create((set) => ({
       const response = await axiosInstance.post("auth/login", credentials);
       set({ authUser: response.data });
       toast.success("Logged in successfully!");
+      get().connectSocket();
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "An error occurred during log-in.";
@@ -74,6 +88,7 @@ export const useAuthStore = create((set) => ({
     try {
       await axiosInstance.post("auth/logout");
       set({ authUser: null });
+      get().disconnectSocket();
       toast.success("Logged out successfully!");
     } catch (error) {
       const errorMessage =
@@ -83,5 +98,36 @@ export const useAuthStore = create((set) => ({
     } finally {
       set({ isUserLoggedOut: false });
     }
+  },
+
+  connectSocket: () => {
+    const { authUser, socket } = get();
+
+    if (!authUser || socket?.connected) return;
+
+    const socketConnection = io(BASE_URL, {
+      withCredentials: true,
+      query: {
+        userId: authUser._id,
+      },
+      autoConnect: false,
+    });
+
+    console.log(`auth userId: ${authUser._id}`);
+
+    socketConnection.connect();
+
+    set({ socket: socketConnection });
+
+    socketConnection.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+      console.log(`Online users updated in state: ${userIds}`);
+    });
+  },
+
+  disconnectSocket: () => {
+    const { socket } = get();
+
+    if (socket?.connected) socket.disconnect();
   },
 }));
