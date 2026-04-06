@@ -3,8 +3,8 @@ import ChatHeader from "./ChatHeader";
 import ConversationMessages from "./ConversationMessages";
 import MessageInput from "./MessageInput";
 import ChatInputMessageDropdown from "./ChatInputMessageDropdown";
-import {motion} from "framer-motion";
-
+import { motion } from "framer-motion";
+import { useChatStore } from "@/store/useChatStore";
 
 const chatDropdownOptions = [
   { id: 1, label: "Attach Image" },
@@ -13,10 +13,22 @@ const chatDropdownOptions = [
 ];
 
 const ChatContainer = () => {
+  const {
+    disconnectFromSocketMessages,
+    connectToSocketMessages,
+    selectedUser,
+  } = useChatStore();
+
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  useEffect(() => {
+    connectToSocketMessages();
+    return () => disconnectFromSocketMessages();
+  }, [selectedUser]);
+
+  
   useEffect(() => {
     setIsTyping(message.trim().length > 0);
   }, [message]);
