@@ -125,7 +125,6 @@ export const sendMessage = async (request, response) => {
     console.error(`❌ Error in sendMessage API: ${error.message}`);
 
     if (error.http_code === 400 || error.message.includes("cloudinary")) {
-      // ARCHITECT FIX: Added 'return' to prevent headers already sent crash
       return response
         .status(400)
         .json({ error: "Media upload failed or file type unsupported." });
