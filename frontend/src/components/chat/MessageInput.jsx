@@ -1,3 +1,4 @@
+import { useChatStore } from "@/store/useChatStore";
 import { Mic, Paperclip, Send } from "lucide-react";
 
 const MessageInput = ({
@@ -5,8 +6,8 @@ const MessageInput = ({
   setMessage,
   isTyping,
   setIsDropdownOpen,
-  isDropdownOpen,
 }) => {
+  const { isMessageSending } = useChatStore();
 
 
   return (
@@ -16,7 +17,7 @@ const MessageInput = ({
         type="button"
         className="shrink-0 cursor-pointer flex items-center justify-center rounded-full p-2 text-zinc-500 transition-all duration-200 hover:bg-zinc-100 hover:text-zinc-700 active:scale-90"
         title="Attach file"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         <Paperclip size={20} strokeWidth={2} />
       </button>
@@ -38,6 +39,7 @@ const MessageInput = ({
             : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
         }`}
         title={isTyping ? "Send message" : "Record audio"}
+        disabled={isMessageSending}
       >
         {isTyping ? (
           <Send size={20} strokeWidth={2} />

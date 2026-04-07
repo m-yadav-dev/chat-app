@@ -211,7 +211,8 @@ const ConversationMessages = () => {
         {DUMMY_MESSAGES.map((msg) => {
           const isOwn = msg.senderId === currentUserId;
           return (
-            <ChatBubble key={msg._id} message={msg} isOwnMessage={isOwn} />
+            <ChatBubble key={msg._id}
+             message={msg} isOwnMessage={isOwn} />
           );
         })}
 
