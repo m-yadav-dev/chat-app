@@ -4,12 +4,24 @@ import UsersAvatar from "../common/userAvatar";
 import ImageMediaType from "./MessageTypes/ImageMediaType";
 import DocumentMediaType from "./MessageTypes/DocumentMediaType";
 import AudioMediaType from "./MessageTypes/AudioMediaType";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useChatStore } from "@/store/useChatStore";
 
 const ChatBubble = ({ isOwnMessage, message }) => {
-  const { senderName, senderImage, messageType, text, fileUrl, createdAt } =
-    message;
+  const { media, messageType, text, createdAt } = message;
+  const { authUser } = useAuthStore();
+  const { selectedUser } = useChatStore();
 
-  const timeString = format(new Date(createdAt), "hh:mm a");
+  const senderName = isOwnMessage ? authUser?.fullName : selectedUser?.fullName;
+  const senderImage = isOwnMessage
+    ? authUser?.profilePic
+    : selectedUser?.profilePic;
+  const fileUrl = media?.url || "";
+
+  const createdDate = createdAt ? new Date(createdAt) : new Date();
+  const timeString = Number.isNaN(createdDate.getTime())
+    ? ""
+    : format(createdDate, "hh:mm a");
 
   const renderMessageContent = () => {
     switch (messageType) {
@@ -36,7 +48,7 @@ const ChatBubble = ({ isOwnMessage, message }) => {
     >
       {!isOwnMessage && (
         <div className="mt-auto shrink-0">
-          <UsersAvatar image={senderImage} name={senderName} size="md" />
+          <UsersAvatar image={senderImage} fullName={senderName} size="md" />
         </div>
       )}
 
