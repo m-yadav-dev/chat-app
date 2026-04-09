@@ -4,6 +4,7 @@ import ConversationMessages from "./ConversationMessages";
 import MessageInput from "./MessageInput";
 import ChatInputMessageDropdown from "./ChatInputMessageDropdown";
 import { useChatStore } from "@/store/useChatStore";
+import MediaPreview from "./MediaPreview";
 
 const chatDropdownOptions = [
   { id: 1, label: "Attach Image" },
@@ -25,7 +26,7 @@ const ChatContainer = () => {
   const [selectedMediaFile, setSelectedMediaFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [messageType, setMessageType] = useState("text");
-  console.log("Media File State:", selectedMediaFile)
+  console.log("Media File State:", selectedMediaFile);
 
   const imageInputRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -67,9 +68,10 @@ const ChatContainer = () => {
     setSelectedMediaFile(null);
     setPreviewUrl(null);
     setMessageType("text");
+    // if (previewUrl) {
+    //   URL.revokeObjectURL(previewUrl);
+    // }
   };
-
-
 
   useEffect(() => {
     connectToSocketMessages();
@@ -105,8 +107,20 @@ const ChatContainer = () => {
       />
 
       <ChatHeader />
-      <ConversationMessages />
-      <div className="mt-auto flex items-center flex-col relative justify-center px-4 py-4">
+      {selectedMediaFile ? (
+        <MediaPreview
+          clearAttachmentSelection={clearAttachmentSelection}
+          message={message}
+          setMessage={setMessage}
+          selectedMediaFile={selectedMediaFile}
+          previewUrl={previewUrl}
+          messageType={messageType}
+        />
+      ) : (
+        <ConversationMessages />
+      )}
+
+      <div className="relative mt-auto flex w-full flex-col items-center justify-center px-4 py-4">
         {isDropdownOpen && (
           <ul className="absolute bottom-20.5 left-4 z-20 w-48 space-y-1 rounded-xl border border-zinc-200/80 bg-white p-2 shadow-[0_14px_34px_-24px_rgba(15,23,42,0.55)]">
             {chatDropdownOptions.map((option) => (
@@ -126,15 +140,20 @@ const ChatContainer = () => {
             ))}
           </ul>
         )}
-        <MessageInput
-          message={message}
-          setMessage={setMessage}
-          isTyping={isTyping}
-          setIsDropdownOpen={setIsDropdownOpen}
-          selectedMediaFile={selectedMediaFile}
-          messageType={messageType}
-          clearAttachmentSelection={clearAttachmentSelection}
-        />
+
+        {!selectedMediaFile && (
+          <div className="mx-auto w-full max-w-275">
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              isTyping={isTyping}
+              setIsDropdownOpen={setIsDropdownOpen}
+              selectedMediaFile={selectedMediaFile}
+              messageType={messageType}
+              clearAttachmentSelection={clearAttachmentSelection}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

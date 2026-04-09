@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from "react";
 import ChatBubble from "./ChatBubble";
 import { useChatStore } from "@/store/useChatStore";
 import { useAuthStore } from "@/store/useAuthStore";
+import Loader from "../loader/Loader";
 
 const ConversationMessages = () => {
   const { authUser } = useAuthStore();
   const currentUserId = authUser?._id; // This should ideally come from your auth context or state
   const messageEndRef = useRef(null);
 
-  const { messages, getMessages, selectedUser } = useChatStore();
+  const { messages, getMessages, selectedUser, isMessagesLoading } =
+    useChatStore();
 
   useEffect(() => {
     if (!selectedUser?._id) {
@@ -32,7 +34,13 @@ const ConversationMessages = () => {
           </span>
         </div>
 
-        {messages.map((msg) => {
+        {isMessagesLoading && (
+          <div className="py-8 text-center">
+            <Loader mode="inline" label="Loading conversation..." size={20} />
+          </div>
+        )}
+
+        {!isMessagesLoading && messages.map((msg) => {
           const isOwn = msg.senderId === currentUserId;
           return (
             <ChatBubble key={msg._id} message={msg} isOwnMessage={isOwn} />
