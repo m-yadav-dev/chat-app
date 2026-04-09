@@ -23,7 +23,8 @@ const UserListItem = ({ chat }) => {
   const { setSelectedUser } = useChatStore();
   const {onlineUsers} = useAuthStore();
   const isUserOnline = onlineUsers.includes(chat._id);
-
+  const {message} = useChatStore();
+  const {text} = message || {};
   return (
     <MotionListItem
       initial="rest"

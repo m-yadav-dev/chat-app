@@ -64,6 +64,8 @@ const MessageInput = ({
           title={isTyping ? "Send message" : "Record audio"}
           disabled={isMessageSending}
         >
+   
+
           {isTyping ? (
             <Send size={20} strokeWidth={2} />
           ) : (
