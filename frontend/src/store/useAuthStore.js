@@ -3,12 +3,17 @@ import { io } from "socket.io-client";
 import { toast } from "sonner";
 import { create } from "zustand";
 
-const BASE_URL =
-  import.meta.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
+// const BASE_URL =
+//   import.meta.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
 
-const socket = io(BASE_URL);
-console.log("Current Base URL:", BASE_URL);
-console.log("Connected Socket:", socket);
+const BASE_URL =
+  import.meta.env.VITE_SOCKET_URL ||
+  (import.meta.env.VITE_BACKEND_URL || "http://localhost:3000").replace(
+    /\/api\/?$/,
+    "",
+  );
+
+
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
