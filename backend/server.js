@@ -1,9 +1,7 @@
-
-import {  server } from "./src/library/socket.js";
+import { server } from "./src/library/socket.js";
 import "./src/app.js";
 import connectDb from "./src/library/db.js";
 import dotenv from "dotenv";
-
 
 import { ENV_VARS } from "./src/library/env.js";
 dotenv.config();
@@ -14,7 +12,9 @@ const startServer = async () => {
   try {
     await connectDb();
     server.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(
+        `Server is running on port ${PORT} in ${ENV_VARS.NODE_ENV || "development"} mode`,
+      );
     });
   } catch (error) {
     console.log(`Error: ${error.message}`);
