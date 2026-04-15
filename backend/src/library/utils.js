@@ -9,8 +9,9 @@ export const generateToken = (userId, response) => {
   response.cookie("token", token, {
     maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true,
-    sameSite: "lax",
-    secure: ENV_VARS.NODE_ENV === "production",
+    sameSite: "none",
+    // secure: ENV_VARS.NODE_ENV === "production",
+    secure: true,
     path: "/",
   });
 
