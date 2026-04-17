@@ -77,9 +77,6 @@ export const useChatStore = create((set, get) => ({
     try {
       const formData = new FormData();
 
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
 
       if (messageData.text) {
         formData.append("text", messageData.text);
