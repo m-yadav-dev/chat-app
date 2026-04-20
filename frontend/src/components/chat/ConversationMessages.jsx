@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import ChatBubble from "./ChatBubble";
 import { useChatStore } from "@/store/useChatStore";
 import { useAuthStore } from "@/store/useAuthStore";
-import Loader from "../loader/Loader";
+import MessageSkeleton from "../skeletons/MessageSkeleton";
 
 const ConversationMessages = () => {
   const { authUser } = useAuthStore();
@@ -35,8 +35,8 @@ const ConversationMessages = () => {
         </div>
 
         {isMessagesLoading && (
-          <div className="py-8 text-center">
-            <Loader mode="inline" label="Loading conversation..." size={20} />
+          <div className="py-4 sm:py-6">
+            <MessageSkeleton />
           </div>
         )}
 

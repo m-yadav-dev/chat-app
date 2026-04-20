@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import UserListItem from "./UserListItem";
 import { useChatStore } from "@/store/useChatStore";
-import Loader from "../loader/Loader";
+import { SidebarSkeleton } from "../skeletons/SidebarSkeleton";
 
 
 const UsersList = () => {
   const { getUsers, users, isUsersLoading } = useChatStore();
+  const skeletonCount = users.length > 0 ? users.length : 5;
 
   useEffect(() => {
     getUsers();
@@ -24,9 +25,7 @@ const UsersList = () => {
 
       <ul className="space-y-1 list-style-none">
         {isUsersLoading ? (
-          <div className="px-2 py-6">
-            <Loader mode="inline" label="Loading chats..." size={18} />
-          </div>
+          <SidebarSkeleton count={skeletonCount} />
         ) : (
           users.map((chat) => <UserListItem key={chat._id} chat={chat} />)
         )}
