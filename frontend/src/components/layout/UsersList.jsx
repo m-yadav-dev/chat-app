@@ -24,7 +24,9 @@ const UsersList = () => {
 
       <ul className="space-y-1 list-style-none">
         {isUsersLoading ? (
-          <Loader />
+          <div className="px-2 py-6">
+            <Loader mode="inline" label="Loading chats..." size={18} />
+          </div>
         ) : (
           users.map((chat) => <UserListItem key={chat._id} chat={chat} />)
         )}

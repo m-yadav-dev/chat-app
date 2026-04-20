@@ -83,7 +83,7 @@ const ChatContainer = () => {
   }, [message]);
 
   return (
-    <section className="relative flex h-full w-full flex-col overflow-hidden border-l border-zinc-200/70 bg-[linear-gradient(180deg,#fafafa_0%,#f5f5f5_100%)]">
+    <section className="relative flex h-full min-h-0 w-full flex-col overflow-hidden border-l-0 bg-[linear-gradient(180deg,#fafafa_0%,#f5f5f5_100%)] md:border-l md:border-zinc-200/70">
       <input
         onChange={handleFilesSelected}
         ref={imageInputRef}
@@ -107,20 +107,22 @@ const ChatContainer = () => {
       />
 
       <ChatHeader />
-      {selectedMediaFile ? (
-        <MediaPreview
-          clearAttachmentSelection={clearAttachmentSelection}
-          message={message}
-          setMessage={setMessage}
-          selectedMediaFile={selectedMediaFile}
-          previewUrl={previewUrl}
-          messageType={messageType}
-        />
-      ) : (
-        <ConversationMessages />
-      )}
+      <div className="min-h-0 flex-1 overflow-hidden">
+        {selectedMediaFile ? (
+          <MediaPreview
+            clearAttachmentSelection={clearAttachmentSelection}
+            message={message}
+            setMessage={setMessage}
+            selectedMediaFile={selectedMediaFile}
+            previewUrl={previewUrl}
+            messageType={messageType}
+          />
+        ) : (
+          <ConversationMessages />
+        )}
+      </div>
 
-      <div className="relative mt-auto flex w-full flex-col items-center justify-center px-4 py-4">
+      <div className="sticky bottom-0 z-20 mt-auto flex w-full flex-col items-center justify-center border-t border-zinc-200/70 bg-white/90 px-3 py-3 backdrop-blur-sm sm:px-4 sm:py-4">
         {isDropdownOpen && (
           <ul className="absolute bottom-20.5 left-4 z-20 w-48 space-y-1 rounded-xl border border-zinc-200/80 bg-white p-2 shadow-[0_14px_34px_-24px_rgba(15,23,42,0.55)]">
             {chatDropdownOptions.map((option) => (
