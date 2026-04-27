@@ -17,7 +17,7 @@ const Header = () => {
 
   const location = useLocation();
 
-  const isHomePage = location.pathname === "/";
+  const isHomePage = ["/", "/login", "/signup"].includes(location.pathname);
   const isProfilePage = location.pathname === "/profile";
 
   {

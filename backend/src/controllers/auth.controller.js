@@ -119,7 +119,8 @@ const updateProfile = async (request, response) => {
         typeof profilePic === "string" && profilePic.startsWith("data:");
       if (isBase64Image) {
         const uploadImage = await uploadService(profilePic);
-        updatedFields.profilePic = uploadImage?.secure_url || uploadImage?.url || uploadImage;
+        updatedFields.profilePic =
+          uploadImage?.secure_url || uploadImage?.url || uploadImage;
       } else if (
         typeof profilePic === "string" &&
         profilePic.startsWith("http")
@@ -154,4 +155,52 @@ const checkAuth = async (request, response) => {
   }
 };
 
-export { signUp, login, logout, updateProfile, checkAuth };
+// implement guest login functionality
+
+const guestLogin = async (_, response) => {
+  try {
+    const randomNum = Math.floor(Math.random() * 9000);
+    const guestName = `Guest ${randomNum}`;
+
+
+
+    const randomEmailUser = `guest_${Date.now()}@guest.com`;
+    const password = `guest_${Date.now()}`;
+    // Hash the password for the guest user
+    // genSaltSync is used to generate a salt for hashing the password, and hashSync is used to hash the password with the generated salt. This ensures that even if multiple guest users are created, they will have unique hashed passwords due to the use of a unique salt for each user.
+    const genSalt = bcrypt.genSaltSync(10);
+    // Hash the password for the guest user
+    // hashSync is used to hash the password with the generated salt. This ensures that even if multiple guest users are created, they will have unique hashed passwords due to the use of a unique salt for each user.
+    // random password = assume guest_1701300000000, genSalt = $2b$10$abcdefg1234567890, hashedPassword = $2b$10$abcdefg1234567890hijklmnopqrstuvwxyz1234567890
+    const hashedPassword = bcrypt.hashSync(password, genSalt);
+
+    const expireAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Set expiration time to 24 hours from now
+
+    const guestUser = new User({
+      fullName: guestName,
+      email: randomEmailUser,
+      password: hashedPassword,
+      profilePic: "",
+      isGuest: true,
+      expireAt: expireAt,
+    });
+    // Save the guest user to the database
+    await guestUser.save();
+    // Generate a dummy token for the guest user and send it in the response
+    generateToken(guestUser._id, response);
+
+    return response.status(200).json({
+      _id: guestUser._id,
+      fullName: guestUser.fullName,
+      email: guestUser.email,
+      profilePic: guestUser.profilePic,
+      isGuest: guestUser.isGuest,
+      expireAt: guestUser.expireAt,
+    });
+  } catch (error) {
+    console.error(`Error during guest login: ${error.message}`);
+    response.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export { signUp, login, logout, updateProfile, checkAuth, guestLogin };

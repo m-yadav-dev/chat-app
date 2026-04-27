@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "../ui/avatar";
 const UsersAvatar = ({ image, online, size = "lg", className = "", fullName }) => {
   const fallbackText = fullName ? fullName.slice(0, 2).toUpperCase() : "NA";
-
+  
   return (
     <>
       <Avatar size={size} className={`${className}`}>

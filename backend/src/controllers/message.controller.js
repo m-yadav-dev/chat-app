@@ -46,6 +46,21 @@ export const sendMessage = async (request, response) => {
     const { id: receiverId } = request.params;
     const senderId = request.user._id;
 
+    // find isUser guest User or not, 
+
+    const senderUser = await User.findById(senderId).select("isGuest expireAt");
+    const receiverUser = await User.findById(receiverId).select("isGuest expireAt");
+
+    let messageExpireAt = null;
+
+
+    if (senderUser?.isGuest || receiverUser?.isGuest) {
+      messageExpireAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Set message expiration time to 24 hours from now
+    }
+
+
+
+
     const { text, messageType, media, fileName, duration } = request.body;
     const mediaFile = request.file; // From multer
 
@@ -107,6 +122,7 @@ export const sendMessage = async (request, response) => {
         fileName: fileName || "",
         duration: duration || 0,
       },
+      expireAt: messageExpireAt,
     });
 
     await newMessage.save();
