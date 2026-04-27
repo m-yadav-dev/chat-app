@@ -13,12 +13,11 @@ const BASE_URL =
     "",
   );
 
-
-
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isUserLoggedIn: false,
   isUserSignUp: false,
+  isGuestLoggingIn: false,
   isCheckingAuth: false,
   isUpdatingProfile: false,
   isUserLoggedOut: false,
@@ -55,7 +54,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isUserSignUp: true });
     try {
       await axiosInstance.post("auth/sign-up", userData);
-      
+
       toast.success("Account created successfully!");
       get().connectSocket();
       return true;
@@ -84,6 +83,24 @@ export const useAuthStore = create((set, get) => ({
       console.error(`Error during log-in: ${errorMessage}`);
     } finally {
       set({ isUserLoggedIn: false });
+    }
+  },
+
+  guestLogin: async () => {
+    set({ isGuestLoggingIn: true });
+    try {
+      const response = await axiosInstance.post("auth/guest-login");
+      set({ authUser: response.data });
+      toast.success("Logged in as guest successfully!");
+      get().connectSocket();
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "An error occurred during guest log-in.";
+      toast.error(errorMessage);
+      console.error(`Error during guest log-in: ${errorMessage}`);
+    } finally {
+      set({ isGuestLoggingIn: false });
     }
   },
 
@@ -118,7 +135,7 @@ export const useAuthStore = create((set, get) => ({
       autoConnect: false,
     });
 
-    console.log(`auth userId: ${authUser._id}`);
+    // console.log(`auth userId: ${authUser._id}`);
 
     socketConnection.connect();
 

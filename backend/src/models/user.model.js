@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    isGuest: {
+      type: Boolean,
+      default: false,
+    }, 
+    expireAt: {
+      type: Date,
+      expires: 0
+    }
   },
   { timestamps: true },
 );

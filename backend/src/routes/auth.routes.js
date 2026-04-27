@@ -5,11 +5,13 @@ import {
   logout,
   updateProfile,
   checkAuth,
+  guestLogin,
 } from "../controllers/auth.controller.js";
 import { protectedAuthRoute } from "../middlewares/arcjet.middleware.js";
 import { authRouteMiddleware } from "../middlewares/auth.middleware.js";
 const route = express.Router();
 
+route.post("/guest-login", protectedAuthRoute, guestLogin);
 
 route.post("/sign-up", protectedAuthRoute, signUp);
 route.post("/login", protectedAuthRoute, login);
