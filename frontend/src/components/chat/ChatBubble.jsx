@@ -42,7 +42,7 @@ const ChatBubble = ({ isOwnMessage, message }) => {
 
   return (
     <div
-      className={`mt-3.5 flex w-full gap-2.5 sm:gap-3 ${
+      className={`mt-2.5 flex w-full gap-2 sm:mt-3.5 sm:gap-2.5 md:mt-4 md:gap-3 lg:mt-4.5 ${
         isOwnMessage ? "justify-end" : "justify-start"
       }`}
     >
@@ -53,18 +53,18 @@ const ChatBubble = ({ isOwnMessage, message }) => {
       )}
 
       <div
-        className={`flex max-w-[82%] flex-col sm:max-w-[72%] lg:max-w-[65%] ${
+        className={`flex max-w-[85%] flex-col sm:max-w-[82%] md:max-w-[75%] lg:max-w-[70%] ${
           isOwnMessage ? "items-end" : "items-start"
         }`}
       >
         {!isOwnMessage && (
-          <span className="mb-1 ml-1 text-[11px] font-medium tracking-wide text-zinc-500">
+          <span className="mb-0.5 ml-1 text-[10px] font-medium tracking-wide text-zinc-500 sm:mb-1 sm:text-[11px] md:text-xs md:mb-1.5">
             {senderName}
           </span>
         )}
 
         <div
-          className={`relative w-full rounded-2xl border px-4 py-3 shadow-[0_7px_22px_-18px_rgba(15,23,42,0.55)]
+          className={`relative w-full rounded-2xl border px-3 py-2.5 shadow-[0_7px_22px_-18px_rgba(15,23,42,0.55)] sm:px-4 sm:py-3 md:px-5 md:py-3.5 lg:px-6 lg:py-4
             ${
               isOwnMessage
                 ? "rounded-br-sm border-zinc-800 bg-zinc-900 text-zinc-50"
@@ -75,7 +75,7 @@ const ChatBubble = ({ isOwnMessage, message }) => {
           {renderMessageContent()}
 
           <div
-            className={`flex justify-end mt-1 ${
+            className={`flex justify-end mt-1 md:mt-1.5 ${
               isOwnMessage ? "text-zinc-300/80" : "text-zinc-500"
             }`}
           >

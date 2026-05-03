@@ -13,17 +13,17 @@ const UsersList = () => {
   }, [getUsers]);
 
   return (
-    <section className="chat-scrollbar min-h-0 flex-1 overflow-y-auto px-2.5 py-3">
-      <div className="mb-2 flex items-center justify-between px-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+    <section className="chat-scrollbar min-h-0 flex-1 overflow-y-auto px-2 py-2 sm:px-2.5 sm:py-3 md:px-4 md:py-4 lg:px-5">
+      <div className="mb-2 flex items-center justify-between px-2 sm:px-2 md:px-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500 md:text-sm">
           Recent Chats
         </p>
-        <span className="text-xs text-zinc-400">
-          {users.length} conversations
+        <span className="text-xs text-zinc-400 md:text-sm">
+          {users.length}
         </span>
       </div>
 
-      <ul className="space-y-1 list-style-none">
+      <ul className="space-y-1 md:space-y-1.5 list-style-none">
         {isUsersLoading ? (
           <SidebarSkeleton count={skeletonCount} />
         ) : (

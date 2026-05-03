@@ -3,7 +3,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { LogIn, Mail, Lock, UserRoundCheck } from "lucide-react";
 
 const LoginInput = () => {
@@ -31,7 +31,7 @@ const LoginInput = () => {
   };
 
   return (
-    <form onSubmit={onSubmitLogInData} className="space-y-4 w-full max-w-md">
+    <form onSubmit={onSubmitLogInData} className="w-full space-y-3 sm:space-y-4">
       <div className="space-y-2">
         <Label
           htmlFor="email"
@@ -80,25 +80,26 @@ const LoginInput = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 pt-1 sm:flex-row">
+      <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:gap-3">
         <Button
           type="submit"
-          className="h-11 flex-1 cursor-pointer"
+          className="h-10 flex-1 cursor-pointer text-sm sm:h-11"
           disabled={isUserLoggedIn}
         >
           <LogIn className="mr-2 size-4" />
-          {isUserLoggedIn ? "Logging In..." : "Log In"}
+          {isUserLoggedIn ? "Logging..." : "Log In"}
         </Button>
         <Button
           type="button"
           variant="outline"
-          className="h-11 flex-1 text-[0.7rem] cursor-pointer border-zinc-300"
+          className="h-10 flex-1 cursor-pointer border-zinc-300 text-xs sm:h-11 sm:text-sm"
           disabled={isGuestLoggingIn}
           onClick={onGuestLogin}
-        >\
+        >
           {!isGuestLoggingIn && <UserRoundCheck className="mr-2 size-4" />}
-          Continue as Guest
-          {isGuestLoggingIn && "Logging In..."}
+          <span className="hidden sm:inline">Continue as Guest</span>
+          <span className="sm:hidden">Guest</span>
+          {isGuestLoggingIn && "..."}
         </Button>
       </div>
     </form>

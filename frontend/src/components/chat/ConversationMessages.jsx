@@ -26,16 +26,16 @@ const ConversationMessages = () => {
   }, [messages]); // Scroll when chat messages update
 
   return (
-    <div className="chat-scrollbar h-full min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-6 scroll-smooth sm:px-6">
-      <div className="mx-auto flex w-full max-w-275 flex-col gap-1">
+    <div className="chat-scrollbar h-full min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-4 scroll-smooth sm:px-4 sm:py-6 md:px-6 md:py-8 lg:px-8">
+      <div className="mx-auto flex w-full max-w-275 flex-col gap-1 sm:gap-1.5 md:gap-2">
         <div className="sticky top-3 z-1 my-4 flex justify-center">
-          <span className="rounded-full border border-zinc-200/80 bg-zinc-100/90 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500 backdrop-blur-sm">
+          <span className="rounded-full border border-zinc-200/80 bg-zinc-100/90 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-zinc-500 backdrop-blur-sm sm:px-3 sm:py-1 sm:text-[11px] md:px-4 md:py-1.5 md:text-xs">
             Today
           </span>
         </div>
 
         {isMessagesLoading && (
-          <div className="py-4 sm:py-6">
+          <div className="py-3 sm:py-4 md:py-6 lg:py-8">
             <MessageSkeleton />
           </div>
         )}

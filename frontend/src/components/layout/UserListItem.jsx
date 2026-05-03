@@ -38,17 +38,16 @@ const UserListItem = ({ chat }) => {
         mass: 0.65,
         backgroundColor: { duration: 0.18, ease: "easeOut" },
       }}
-      className="group cursor-pointer rounded-2xl border border-transparent transform-gpu
-      px-2.5 py-2.5"
+      className="group cursor-pointer rounded-2xl border border-transparent transform-gpu px-2 py-2 sm:px-2.5 sm:py-2.5 md:px-3.5 md:py-3 lg:px-4"
       onClick={() => setSelectedUser(chat)}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2 sm:gap-3 md:gap-3.5">
         <UsersAvatar 
         image={profilePic} name={fullName} 
         online={isUserOnline} size="lg"  />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-sm font-semibold text-zinc-900">
+            <p className="truncate text-xs font-semibold text-zinc-900 sm:text-sm md:text-base">
               {fullName}
             </p>
             {/* <span className="shrink-0 text-[11px] text-zinc-400">{time}</span> */}
