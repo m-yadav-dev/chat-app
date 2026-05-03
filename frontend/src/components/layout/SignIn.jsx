@@ -34,7 +34,7 @@ const SignIn = () => {
     }
   };
   return (
-    <form onSubmit={onSubmitFormData} className="space-y-4">
+    <form onSubmit={onSubmitFormData} className="w-full space-y-3 sm:space-y-4">
       <div className="space-y-2">
         <Label htmlFor="fullName" className="flex items-center gap-2 text-zinc-700">
           <UserRoundPlus className="size-4 text-zinc-500" />
@@ -100,11 +100,11 @@ const SignIn = () => {
 
       <Button
         type="submit"
-        className="h-11 w-full cursor-pointer"
+        className="h-10 w-full cursor-pointer text-sm sm:h-11"
         disabled={isUserSignUp}
       >
         <UserRoundPlus className="mr-2 size-4" />
-        {isUserSignUp ? "Creating Account..." : "Sign Up"}
+        {isUserSignUp ? "Creating..." : "Sign Up"}
       </Button>
     </form>
   );
