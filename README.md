@@ -21,13 +21,13 @@ Chatrivo is a real-time messaging platform designed for speed and simplicity. It
 
 **Highlight:** Includes a **"One-Click Guest Login"** system so recruiters and clients can test the app instantly without signing up!
 
-## ✨ Key features-
+## ✨ Key Features
 
-* ** Real-Time Messaging:** Instant message delivery and "user is typing" indicators powered by Socket.io.
-* ** Frictionless Entry:** Automated Guest Login with TTL (Time-To-Live) database auto-cleanup.
-* ** Media Sharing:** Secure image and audio uploads integrated with Cloudinary.
-* ** Secure Authentication:** JWT-based authentication with HTTP-only secure cookies.
-* ** State Management:** Optimized client-side state handling using Zustand.
+* **⚡ Real-Time Communication:** Instant message delivery and live connection handling powered by Socket.io.
+* **📁 Polymorphic Message Handling:** Seamless processing and sharing of diverse payloads, allowing users to send text, images, audio files, and documents in a single chat thread.
+* **🧠 Optimized State Management:** Lightweight and lightning-fast client-side state handling utilizing Zustand to prevent unnecessary re-renders.
+* **🕵️‍♂️ Frictionless Guest Mode:** "One-Click" anonymous login featuring automated database cleanup (MongoDB TTL index) for instant, hassle-free app testing.
+* **🔐 Secure Auth & Cloud Storage:** JWT-based authentication via HTTP-only cookies, coupled with Cloudinary integration for scalable media asset management.
 
 ## 🛠️ Tech Stack
 
