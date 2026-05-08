@@ -40,5 +40,11 @@ Chatrivo is a real-time messaging platform designed for speed and simplicity. It
 
 If you want to run this project on your local machine, follow these steps:
 
+
+<p align="left">
 git clone https://github.com/m-yadav-dev/chatrivo-app.git
+</p>
+
+<p align="left">
 cd chatrivo-app
+</p>
